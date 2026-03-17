@@ -12,6 +12,8 @@ import {
 export default function App() {
   const [contador, setContador] = useState(0);
   const [contador2, setContador2] = useState(0);
+  const [vitorias1, setVitorias1] = useState(0);
+  const [vitorias2, setVitorias2] = useState(0);
 
   const adicionarPontos = (valor, setFunc, time) => {
     setFunc((prev) => {
@@ -19,8 +21,16 @@ export default function App() {
 
       if (novo >= 12) {
         Alert.alert("Fim de jogo", `${time} ganhou!`);
+
+        if (time === "Nós") {
+          setVitorias1((prev) => prev + 1);
+        } else {
+          setVitorias2((prev) => prev + 1);
+        }
+
         setContador(0);
         setContador2(0);
+
         return 0;
       }
 
@@ -42,27 +52,22 @@ export default function App() {
       />
 
       <View style={styles.containerLinha}>
-        
-        {/* TIME ESQUERDA */}
         <View style={styles.coluna}>
           <Text style={styles.nome}>Nós</Text>
 
           <Text style={styles.contador}>{contador}</Text>
+          <Text style={styles.ganhou}>Ganhou {vitorias1}</Text>
 
           <View style={styles.botoesDuplo}>
             <TouchableOpacity style={styles.botaoAumentar} onPress={aumentar}>
               <Text style={styles.textoBotao}>+</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.botaoDiminuir}
-              onPress={diminuir}
-            >
+            <TouchableOpacity style={styles.botaoDiminuir} onPress={diminuir}>
               <Text style={styles.textoBotao}>-</Text>
             </TouchableOpacity>
           </View>
 
-          {/* BOTÕES TRUCO ESQUERDA */}
           <View style={styles.botoesTruco}>
             <TouchableOpacity
               style={styles.botaoTruco}
@@ -94,26 +99,22 @@ export default function App() {
           </View>
         </View>
 
-        {/* TIME DIREITA */}
         <View style={styles.coluna}>
           <Text style={styles.nome}>Eles</Text>
 
           <Text style={styles.contador}>{contador2}</Text>
+          <Text style={styles.ganhou}>Ganhou {vitorias2}</Text>
 
           <View style={styles.botoesDuplo}>
             <TouchableOpacity style={styles.botaoAumentar} onPress={aumentar2}>
               <Text style={styles.textoBotao}>+</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.botaoDiminuir}
-              onPress={diminuir2}
-            >
+            <TouchableOpacity style={styles.botaoDiminuir} onPress={diminuir2}>
               <Text style={styles.textoBotao}>-</Text>
             </TouchableOpacity>
           </View>
 
-          {/* BOTÕES TRUCO DIREITA */}
           <View style={styles.botoesTruco}>
             <TouchableOpacity
               style={styles.botaoTruco}
@@ -144,11 +145,10 @@ export default function App() {
             </TouchableOpacity>
           </View>
         </View>
-
       </View>
 
       <StatusBar style="auto" />
-    </View> //esses button aq tive ajuda do gpt e do gabriel pq eu tava perdido
+    </View>
   );
 }
 
@@ -186,6 +186,11 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
 
+  ganhou: {
+    fontSize: 18,
+    marginBottom: 10,
+  },
+
   botoesDuplo: {
     flexDirection: "row",
     marginBottom: 10,
@@ -220,7 +225,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#333",
     padding: 10,
     borderRadius: 8,
-    marginVertical: 5, // espaço entre eles
+    marginVertical: 5,
     width: 80,
     alignItems: "center",
   },
