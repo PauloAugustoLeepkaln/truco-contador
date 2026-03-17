@@ -44,6 +44,18 @@ export default function App() {
   const diminuir2 = () => setContador2((prev) => prev - 1);
   const aumentar2 = () => adicionarPontos(1, setContador2, "Eles");
 
+  const reiniciar = () => {
+    setContador(0);
+    setContador2(0);
+  };
+
+  const novoJogo = () => {
+    setContador(0);
+    setContador2(0);
+    setVitorias1(0);
+    setVitorias2(0);
+  };
+
   return (
     <View style={styles.container}>
       <Image
@@ -147,6 +159,16 @@ export default function App() {
         </View>
       </View>
 
+      <View style={styles.botoesControle}>
+        <TouchableOpacity style={styles.botaoControle} onPress={reiniciar}>
+          <Text style={styles.textoBotao}>Reiniciar</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.botaoControle} onPress={novoJogo}>
+          <Text style={styles.textoBotao}>Novo Jogo</Text>
+        </TouchableOpacity>
+      </View>
+
       <StatusBar style="auto" />
     </View>
   );
@@ -200,6 +222,18 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     marginTop: 10,
+  },
+
+  botoesControle: {
+    flexDirection: "row",
+    marginTop: 30,
+  },
+
+  botaoControle: {
+    backgroundColor: "#555",
+    padding: 12,
+    borderRadius: 10,
+    marginHorizontal: 10,
   },
 
   botaoAumentar: {
