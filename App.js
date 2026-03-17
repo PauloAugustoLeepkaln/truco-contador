@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import {
-  Button,
+  Alert,
   Image,
   StyleSheet,
   Text,
@@ -13,18 +13,26 @@ export default function App() {
   const [contador, setContador] = useState(0);
   const [contador2, setContador2] = useState(0);
 
-  const diminuir = () => {
-    setContador(contador - 1);
+  const adicionarPontos = (valor, setFunc, time) => {
+    setFunc((prev) => {
+      const novo = prev + valor;
+
+      if (novo >= 12) {
+        Alert.alert("Fim de jogo", `${time} ganhou!`);
+        setContador(0);
+        setContador2(0);
+        return 0;
+      }
+
+      return novo;
+    });
   };
-  const aumentar = () => {
-    setContador(contador + 1);
-  };
-  const diminuir2 = () => {
-    setContador2(contador2 - 1);
-  };
-  const aumentar2 = () => {
-    setContador2(contador2 + 1);
-  };
+
+  const diminuir = () => setContador((prev) => prev - 1);
+  const aumentar = () => adicionarPontos(1, setContador, "Nós");
+
+  const diminuir2 = () => setContador2((prev) => prev - 1);
+  const aumentar2 = () => adicionarPontos(1, setContador2, "Eles");
 
   return (
     <View style={styles.container}>
@@ -33,38 +41,110 @@ export default function App() {
         style={styles.minhaImagem}
       />
 
-      <View style={[styles.containerLinha, { flexDirection: "row" }]}>
-        <Text style={[styles.coluna, { fontSize: 40 }]}>Nós</Text>
-        <Text style={[styles.coluna, { fontSize: 40 }]}>Eles</Text>
-      </View>
+      <View style={styles.containerLinha}>
+        
+        {/* TIME ESQUERDA */}
+        <View style={styles.coluna}>
+          <Text style={styles.nome}>Nós</Text>
 
-      <View style={[styles.containerLinha, { flexDirection: "row" }]}>
-        <Text style={[styles.coluna, { fontSize: 60}]}>{contador}</Text>
-        <Text style={[styles.coluna, { fontSize: 60}]}>{contador2}</Text>
-      </View>
+          <Text style={styles.contador}>{contador}</Text>
 
-      <View style={styles.botoes}>
-        <TouchableOpacity style={styles.botaoAumentar} onPress={aumentar}>
-          <Text style={styles.textoBotao}>+</Text>
-        </TouchableOpacity>
+          <View style={styles.botoesDuplo}>
+            <TouchableOpacity style={styles.botaoAumentar} onPress={aumentar}>
+              <Text style={styles.textoBotao}>+</Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[
-            styles.botaoDiminuir,
-            { marginRight: 30 },
-          ]} /*aprendi que da pra botar um style e uma coisa especifica junto agora kkkk*/
-          onPress={diminuir}
-        >
-          <Text style={styles.textoBotao}>-</Text>
-        </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.botaoDiminuir}
+              onPress={diminuir}
+            >
+              <Text style={styles.textoBotao}>-</Text>
+            </TouchableOpacity>
+          </View>
 
-        <TouchableOpacity style={styles.botaoAumentar} onPress={aumentar2}>
-          <Text style={styles.textoBotao}>+</Text>
-        </TouchableOpacity>
+          {/* BOTÕES TRUCO ESQUERDA */}
+          <View style={styles.botoesTruco}>
+            <TouchableOpacity
+              style={styles.botaoTruco}
+              onPress={() => adicionarPontos(3, setContador, "Nós")}
+            >
+              <Text style={styles.textoBotao}>Truco</Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity style={styles.botaoDiminuir} onPress={diminuir2}>
-          <Text style={styles.textoBotao}>-</Text>
-        </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.botaoTruco}
+              onPress={() => adicionarPontos(6, setContador, "Nós")}
+            >
+              <Text style={styles.textoBotao}>6</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.botaoTruco}
+              onPress={() => adicionarPontos(9, setContador, "Nós")}
+            >
+              <Text style={styles.textoBotao}>9</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.botaoTruco}
+              onPress={() => adicionarPontos(12, setContador, "Nós")}
+            >
+              <Text style={styles.textoBotao}>12</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* TIME DIREITA */}
+        <View style={styles.coluna}>
+          <Text style={styles.nome}>Eles</Text>
+
+          <Text style={styles.contador}>{contador2}</Text>
+
+          <View style={styles.botoesDuplo}>
+            <TouchableOpacity style={styles.botaoAumentar} onPress={aumentar2}>
+              <Text style={styles.textoBotao}>+</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.botaoDiminuir}
+              onPress={diminuir2}
+            >
+              <Text style={styles.textoBotao}>-</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* BOTÕES TRUCO DIREITA */}
+          <View style={styles.botoesTruco}>
+            <TouchableOpacity
+              style={styles.botaoTruco}
+              onPress={() => adicionarPontos(3, setContador2, "Eles")}
+            >
+              <Text style={styles.textoBotao}>Truco</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.botaoTruco}
+              onPress={() => adicionarPontos(6, setContador2, "Eles")}
+            >
+              <Text style={styles.textoBotao}>6</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.botaoTruco}
+              onPress={() => adicionarPontos(9, setContador2, "Eles")}
+            >
+              <Text style={styles.textoBotao}>9</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.botaoTruco}
+              onPress={() => adicionarPontos(12, setContador2, "Eles")}
+            >
+              <Text style={styles.textoBotao}>12</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
       </View>
 
       <StatusBar style="auto" />
@@ -79,34 +159,48 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  containerLinha: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 20
-  },
-  coluna: {
-    width: 140, // teste
-    alignItems: "center",
-  },
-  textoNome: {
-    fontSize: 35,
-    marginRight: 10, // espaço entre os textos
-  },
+
   minhaImagem: {
     width: 200,
     height: 200,
-    resizeMode: "contain", //pra n cortar a imagem
+    resizeMode: "contain",
   },
-  botoes: {
+
+  containerLinha: {
     flexDirection: "row",
     justifyContent: "center",
     marginTop: 20,
   },
 
+  coluna: {
+    width: 160,
+    alignItems: "center",
+  },
+
+  nome: {
+    fontSize: 40,
+  },
+
+  contador: {
+    fontSize: 60,
+    marginVertical: 10,
+  },
+
+  botoesDuplo: {
+    flexDirection: "row",
+    marginBottom: 10,
+  },
+
+  botoesTruco: {
+    flexDirection: "column",
+    alignItems: "center",
+    marginTop: 10,
+  },
+
   botaoAumentar: {
     backgroundColor: "green",
-    width: 80,
-    height: 80,
+    width: 60,
+    height: 60,
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
@@ -115,16 +209,25 @@ const styles = StyleSheet.create({
 
   botaoDiminuir: {
     backgroundColor: "red",
-    width: 80,
-    height: 80,
+    width: 60,
+    height: 60,
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
   },
 
+  botaoTruco: {
+    backgroundColor: "#333",
+    padding: 10,
+    borderRadius: 8,
+    marginVertical: 5, // espaço entre eles
+    width: 80,
+    alignItems: "center",
+  },
+
   textoBotao: {
     color: "white",
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: "bold",
   },
 });
